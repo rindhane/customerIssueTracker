@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8">
+    <link
+			href="https://fonts.googleapis.com/css?family=Poppins:400,500&display=swap"
+			rel="stylesheet"
+	/>
+  <link rel="stylesheet" href="/assets/CSS/main.css">
+  <link rel="stylesheet" href="/assets/CSS/login.css">
+  <title>QDas Dashboard</title>
+  <link rel="icon" href="/assets/img/icons/favicon.png">
+</head>
+<body>
+  <div class="main-content">
+    <form class="main-form" id="signInForm" >
+      <img src="/assets/img/logo.png" alt="logo">
+      <div class="key-text">Please sign in</div>
+      <div class="form-floating" >
+        <input type="email" name="email" class="form-control" id="loginInput" placeholder="name@example.com">
+        <label class="inputs" for="loginInput">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password">
+        <label class="inputs"  for="loginPassword">Password</label>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" value="remember-me"> Remember me
+        </label>
+      </div>
+      <button class="btn-primary" type="submit">Sign in</button>
+      <p class="text-muted">© 2017–2023</p>
+    </form>
+  </div>
+  <div class="signUpContainer">
+    <button class="btn-primary btn-change" onclick="raiseModal()">Sign-Up/Reset</button>
+  </div>
+  <div class="modalBackground" id="modalBackground">
+  </div>
+  <template id="modal_template">
+    <div class="modal smallModal" id="modal">
+      <span class="close" id="close" onclick="closeModal();">Close &times;</span>  
+      <div class="modalHeading">
+            Generate Sign-In Details for your account:  
+      </div>
+        <div class="modalSection">
+          <label for="emailDetail">Enter your Email Address :</label>
+          <input type="email" id="emailSignUp" name="emailDetail" placeholder="email@company">
+          <div class="hideDisplayContainer" id="otpDisplayWrapper">
+            <div class="otpContainer">
+              <button class="btn-primary " onclick="generateOTPRequest()" value="Generate OTP">Generate OTP</button>
+              <label  for="emailDetail">Enter the OTP received :</label>
+              <input type="text" id="otpSignUp" name="otpField" placeholder="otp">
+            </div>
+          </div>
+          <div class="hideDisplayContainer" id="signUpSubmission" >
+            <input type="submit" onclick="submitAccountDetails()" value="Submit">  
+          </div>
+        </div>   
+    </div>
+  </template>
+  <script src="/assets/Scripts/helperFunctions.js"></script>
+  <script defer src="/assets/Scripts/loginCredentialValidation.js"></script>
+  <script defer src="/assets/Scripts/pageRendererFunctions.js"></script>
+  <script defer src="/assets/Scripts/otpRequest.js"></script>
+  <script defer src="/assets/Scripts/signUpAction.js"></script> 
+</body>
+</html>

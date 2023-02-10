@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/assets/CSS/main.css">
+        <link rel="icon" type="image/x-icon" href="/assets/img/icons/favicon.png">
+        <title>Service Portal</title>
+    </head>
+    <body>
+        <header>
+        </header>
+        <main>
+            <div class="sideBar" id="sideBar">
+                    <a href="#">Home</a>
+                    <a href="#">Settings</a>
+                    <a></a>
+            </div>
+            <div class="userBlock">
+                <div class="topPanel">
+                    <div class="DirectoryNav">
+                        <span class="UserName">User</span>
+                        <span>/</span>
+                        <span>Home</span>
+                    </div>
+                    <div class="icon-button" onclick="raiseModal()">
+                        <div class="Icon-Add">
+                        </div>
+                        <span >Raise Issue</span>
+                    </div>
+                </div>
+                <div class="IssueTable" id="IssueTable">
+                    <div class="itemSection tableHeader">
+                        <div class="item shortBlock">Sr</div>
+                        <div class="item descBlock">Short Description</div>
+                        <div class="item">Last Action</div>
+                        <div class="item">Status</div>
+                    </div>
+                    <!--
+                    <div class="itemSection">
+                        <div class="item shortBlock">1</div>
+                        <div class="item descBlock">Qdas Not Working release work</div>
+                        <div class="item"> 03/Feb/2023</div>
+                        <div class="item">Assigned</div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </main>
+        <div class="modalBackground" id="modalBackground">
+        </div>   
+        <footer>
+        </footer>
+        <template id="modal_template">
+            <div class="modal" id="modal">
+                <span class="close" id="close" onclick="closeModal();">Close &times;</span>
+                <div class="modalHeading">
+                    Add Details related to the New issue
+                </div>
+                <div class="modalSection">
+                    <div class="inputType">
+                        <label for="issueType">
+                            Issue Category : 
+                        </label>
+                        <select id="issueType">
+                            <option value=01>QDAS Query</option>
+                            <option value=02>QDAS Issue / TroubleShoot</option>
+                            <option value=03>QDAS Application OnSite Support</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modalSection big_input_box">
+                    <label for="Decription"> Description about the Issue</label>
+                    <textarea name="Description" id="issueDescription"></textarea>
+                </div>
+                <button class="modalButton" onclick="saveNewIssueDetails()">Save</button>
+            </div>
+            
+        </template>
+        <script src="/assets/Scripts/helperFunctions.js"></script>
+        <script src="/assets/Scripts/pageRendererFunctions.js"></script>
+        <script defer>
+            //rendering the page
+            (async()=>{
+                renderSidebar();
+                let result= await getIssuesUser();
+                renderIssueTable(IssueTable,result);
+            })();
+        </script>  
+    </body>
+</html>
