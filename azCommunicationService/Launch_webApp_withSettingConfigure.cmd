@@ -1,0 +1,2 @@
+:: az webapp config set --resource-group <resourceGroupName> --name <appName> --always-on true  --subscription "<subscription name>"
+az webapp up --runtime PYTHON:3.9 --sku B1 --logs --name <appName>  --subscription "<subscription Name>" --resource-group <resourcegroupName>
