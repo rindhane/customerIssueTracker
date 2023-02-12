@@ -1,8 +1,9 @@
 package main
 
 import (
+	"azureComm/azureOTP"
+	"context"
 	"errors"
-	"fmt"
 	"time"
 )
 
@@ -25,11 +26,25 @@ func eliminateEmailOTPKey(store map[string]string, email string) {
 }
 
 func dispatchOTP(email string, otp string) error {
-	fmt.Println(email, otp)
+	var em azureOTP.EmailRequest
+	em.Email = email
+	em.Message = otp
+	em.ServiceUrl = ENV_INPUTS.Secrets.OtpServiceEndpoint
+	_, err := azureOTP.SendOTPRequestAzure(&em)
+	if err != nil {
+		return err
+	}
 	return nil
 }
-func dispatchLoginPassword(email string) error {
-	fmt.Println(createRandomString(6))
+func dispatchLoginPassword(email string, password string) error {
+	var em azureOTP.EmailRequest
+	em.Email = email
+	em.Message = password
+	em.ServiceUrl = ENV_INPUTS.Secrets.OtpServiceEndpoint
+	_, err := azureOTP.SendOTPRequestAzure(&em)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -44,11 +59,13 @@ func randomGenerator() string {
 	return createRandomNumericalString(6)
 }
 
-func validateOTP(email string, otp string) error {
+func validateOTPNewAccount(ct *Controller, ctx context.Context, email string, otp string) error {
 	otpStored, ok := bufferedMap[email]
 	if ok {
 		if otpStored == otp {
-			go dispatchLoginPassword(email)
+			newPassword := createRandomString(6)
+			setPasswordToUser(ctx, ct, email, createHashString(newPassword))
+			go dispatchLoginPassword(email, newPassword)
 			delete(bufferedMap, email)
 			return nil
 		}

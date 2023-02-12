@@ -44,7 +44,7 @@ func loginPage(c *gin.Context) {
 }
 
 // function to provide auth token if the user credentials are satisfied
-func checkAuth(c *gin.Context) {
+func (ct *Controller) checkAuth(c *gin.Context) {
 	credFromClient, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		c.JSON(http.StatusExpectationFailed, resultStatus{Status: "error", Remark: "not authenticated"})
@@ -54,7 +54,7 @@ func checkAuth(c *gin.Context) {
 	userCred := loginCredential{}
 	json.Unmarshal(credFromClient, &userCred)
 	//validate UserCredentials
-	valid, user := validateUserCredentials(userCred.Email, userCred.Password)
+	valid, user := validateUserCredentials(c, ct, userCred.Email, userCred.Password)
 	if !valid {
 		c.JSON(http.StatusUnauthorized, resultStatus{
 			Status: "false",
@@ -152,7 +152,7 @@ func fetchOTPRequest(c *gin.Context) {
 	c.JSON(http.StatusExpectationFailed, resultStatus{Status: "error", Remark: err.Error()})
 }
 
-func otpAuthValidation(c *gin.Context) {
+func (ct *Controller) otpAuthValidationSignUpReset(c *gin.Context) {
 	credFromClient, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		c.JSON(http.StatusExpectationFailed, resultStatus{Status: "error", Remark: "no input"})
@@ -160,7 +160,7 @@ func otpAuthValidation(c *gin.Context) {
 	}
 	userCred := loginCredential{}
 	json.Unmarshal(credFromClient, &userCred)
-	err = validateOTP(userCred.Email, userCred.Password)
+	err = validateOTPNewAccount(ct, c.Copy(), userCred.Email, userCred.Password)
 	if err != nil {
 		c.JSON(http.StatusExpectationFailed, resultStatus{Status: "error", Remark: err.Error()})
 		return

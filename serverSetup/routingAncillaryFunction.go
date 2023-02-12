@@ -23,3 +23,8 @@ func authFailAction(c *gin.Context) {
 	return
 	//redirect with params if needed, ref:https://stackoverflow.com/questions/61970551/golang-gin-redirect-and-render-a-template-with-new-variables
 }
+
+func HomePage(c *gin.Context) {
+	location := url.URL{Path: "/UserDashboard"}
+	c.Redirect(http.StatusTemporaryRedirect, location.RequestURI())
+}

@@ -32,7 +32,7 @@ func jwtTest() {
 }
 
 func getSigningKey() []byte {
-	mySigningKey := []byte("T")
+	mySigningKey := []byte(ENV_INPUTS.Secrets.JwtKey)
 	return mySigningKey
 }
 
@@ -43,7 +43,7 @@ func generateTokenString(user userDetails) string {
 	// Create the claims
 	claims := MyCustomClaims{
 		"Auth Registered",
-		user.accessLevel,
+		user.AccessLevel,
 		jwt.RegisteredClaims{
 			// A usual scenario is to set the expiration time relative to the current time
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),

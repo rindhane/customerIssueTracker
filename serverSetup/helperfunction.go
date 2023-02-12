@@ -2,6 +2,8 @@ package main
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
+	"encoding/hex"
 	"math/big"
 	"strings"
 )
@@ -42,4 +44,12 @@ func createRandomString(length int) string {
 		sb.WriteString(provideRandomAlphabetCharacter())
 	}
 	return sb.String()
+}
+
+func createHashString(message string) string {
+	var dat []byte = []byte(message)
+	h := sha256.New()
+	h.Write(dat)
+	byteS := h.Sum(nil)
+	return hex.EncodeToString(byteS)
 }

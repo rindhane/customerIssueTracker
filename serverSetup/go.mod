@@ -3,12 +3,15 @@ module customerSite/serverSetup
 go 1.19
 
 require (
+	azureComm v0.0.0-00010101000000-000000000000
 	github.com/gin-gonic/gin v1.8.2
 	github.com/golang-jwt/jwt/v4 v4.4.3
 	github.com/microsoft/go-mssqldb v0.20.0
+	helpers v0.0.0-00010101000000-000000000000
 )
 
 require (
+	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
@@ -30,3 +33,7 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace azureComm => ..\azureComm
+
+replace helpers => ../helpers

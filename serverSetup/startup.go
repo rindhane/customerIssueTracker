@@ -3,25 +3,44 @@ package main
 import (
 	"customerSite/serverSetup/azuredb"
 	"fmt"
+	Reader "helpers/tomlReader"
 
 	"github.com/gin-gonic/gin"
 )
 
+type (
+	tomlData struct {
+		Secrets  keyConfig        `toml:"secrets"`
+		DbConfig azuredb.DbConfig `toml:"dbConfig"`
+	}
+
+	keyConfig struct {
+		OtpServiceEndpoint string `toml:"otpEndpoint"`
+		JwtKey             string `toml:"jwtKey"`
+	}
+)
+
+var ENV_INPUTS tomlData
+
+func setEnvInputs(envInput *tomlData) {
+	Reader.ReadTomlConfig("./secrets.toml", envInput)
+}
+
 func main() {
-	fmt.Println(createRandomNumericalString(6))
+	setEnvInputs(&ENV_INPUTS)
 	router := gin.Default()
 	router.Use(AuthMiddleWare)
 	router.Static("/assets", "./assets")
 	router.LoadHTMLGlob("templates/*")
 	// set db setup
 	//reference : https://stackoverflow.com/questions/35672842/go-and-gin-passing-around-struct-for-database-context
-	pool, err := azuredb.InstantiateDBpool(azuredb.GetConnString())
+	pool, err := azuredb.InstantiateDBpool(ENV_INPUTS.DbConfig.GetConnString())
 	defer pool.Close()
 	if err != nil {
 		fmt.Println("db correction error occured: ", err.Error())
 	}
 	ct := Controller{Database: pool} // preparing for passing db reference
-	setRoutes(router, ct)
+	setRoutes(router, &ct)
 	router.Run("localhost:9500")
 
 }

@@ -10,16 +10,19 @@ import (
 )
 
 var Db *sql.DB
-var server = "1"
-var port = 11
-var user = "q"
-var password = "1"
-var database = "ma"
 
-func GetConnString() string {
+type DbConfig struct {
+	Server   string `toml:"server"`
+	Port     int    `toml:"port"`
+	User     string `toml:"user"`
+	Password string `toml:"password"`
+	Database string `toml:"database"`
+}
+
+func (db *DbConfig) GetConnString() string {
 	// Build connection string
 	connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
-		server, user, password, port, database)
+		db.Server, db.User, db.Password, db.Port, db.Database)
 	return connString
 }
 
@@ -34,9 +37,9 @@ func InstantiateDBpool(connString string) (*sql.DB, error) {
 	return Db, nil
 }
 
-func Check_ping() bool {
+func Check_ping(db *sql.DB) bool {
 	var err error
-	db, err := InstantiateDBpool(GetConnString())
+	//db, err := InstantiateDBpool(GetConnString())
 	db.Conn(context.Background())
 	ctx := context.Background()
 	err = db.PingContext(ctx)

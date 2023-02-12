@@ -12,7 +12,9 @@ async function validateCredentials(event)
         storeInLocalStorage("qdasAuthToken",tokenData.tokenString);
         await setCookie("authToken",tokenData.tokenString);
         onSuccessGoToDefaultPage();
+        return
     }
+    window.alert("password is incorrect");
 }
 
 async function onSuccessGoToDefaultPage(){
